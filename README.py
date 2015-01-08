@@ -1,7 +1,7 @@
 # CODE2040
 #Viviana Bermudez, CODE2040 API Challenge
 from json import dumps, loads
-from urllibb2 import urlopen, Request
+from urllib2 import urlopen, Request
 
 #Received help from Google, stackoverflow for writing the timestamp function
 #Received help from a friend on how to pull tokens and information from URLs
@@ -9,7 +9,7 @@ from urllibb2 import urlopen, Request
 
 receiveList=[]        #list of information to be received from URLs
 info = {'token':'YRGq5WDlur'}
-url = 'http://challenge.code2040.org/api/getstring' 
+ 
 myURLs = ['http://challenge.code2040.org/api/getstring',
           'http://challenge.code2040.org/api/haystack',
           'http://challenge.code2040.org/api/prefix',
@@ -17,7 +17,9 @@ myURLs = ['http://challenge.code2040.org/api/getstring',
           
           
 for x in range(4):
-    request = Request(myURLs[i], data=dumps(info))
+    print "inject 1"
+    request = Request(myURLs[x], data=dumps(info))
+    print "inject 2"
     receiveList.append(loads(urlopen(request).read())['result'])
 
 def reverseString():
@@ -45,64 +47,37 @@ def prefixFinder():
     array = receiveList[2]['array']
     
     for string in array:
-        if x.startswith(str(prefix), 0, len(prefix)) == True:
+        if string.startswith(str(prefix), 0, len(prefix)) == False:
             Result += [string]
     
     return Result
         
 
-import dateutil.parser                           #from stackoverflow.com
-def addSeconds(interval, datestamp):
-    """adds 'interval' seconds to date represented by datestamp"""
-    datestamp = receiveList[3]['datestamp']
-    interval = receiveList[3]['interval']
     
-    date1= dateutil.parser.parse(datestamp)
-    date= str(date1)
-    year = int(date[0:4])
-    month = int(date[5:7])
-    day = int(date[8:10])
-    hour = int(date[11:13])
-    minute = int(date[14:16])
-    second = int(date[17:19])
-    seconds = int(interval)
+import datetime
+def addInterval():
+    date = receiveList[3]['datestamp']
+    numSecs = receiveList[3]['interval']
+    initialTime = datetime.datetime(int(date[0:4]),
+    int(date[5:7]),
+    int(date[8:10]),
+    int(date[11:13]),
+    int(date[14:16]),
+    int(date[17:19]),
+    int(date[20:23]))
     
-    second += seconds
-    if second >= 60:
-        second -= 60
-        minute += 1
-        if minute == 60:
-            minute = 00
-            hour += 1
-            if hour == 24:
-                hour = 00
-                day += 1
-                if day == 32:
-                    if month == 01 or month == 03 or month == 05 or month == 07 or month == 08 or month == 10 or month == 12:
-                        day = 01
-                        month += 1
-                        if month == 13:
-                            month = 12
-                            year +=  1
-                if day == 31:
-                    if month = 04 or month = 06 or month = 09 or month = 11:
-                        day = 01
-                        month += 1
-                if day == 29:
-                    if month == 02:
-                        if year % 4 == 0:
-                            if year % 100 != 0:
-                                if year %400 == 0:
-                                    day = 01
-                                    month += 1
-                                    
-    return date
+    print initialTime
+    
+    finalTime = initialTime + datetime.timedelta(seconds=numSecs)
+
+    return finalTime.isoformat()
     
     
     
     
     
-Functions = [reverseString(), needleInHaystack(), prefixFinder(), addSeconds()]    
+    
+Functions = [reverseString(), needleInHaystack(), prefixFinder(), addInterval()]    
 SendURL = ['http://challenge.code2040.org/api/validatestring',
           'http://challenge.code2040.org/api/validateneedle',
           'http://challenge.code2040.org/api/validateprefix',
@@ -115,7 +90,6 @@ for x in range(4):
     final = loads(urlopen(Rqst).read())['result']
     print final
     
-     
       
  
 
