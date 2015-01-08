@@ -3,6 +3,9 @@
 from json import dumps, loads
 from urllibb2 import urlopen, Request
 
+#Received help from Google, stackoverflow for writing the timestamp function
+#Received help from a friend on how to pull tokens and information from URLs
+
 
 receiveList=[]        #list of information to be received from URLs
 info = {'token':'YRGq5WDlur'}
@@ -20,17 +23,14 @@ for x in range(4):
 def reverseString():
     """takes input string, s, and returns it reversed"""
     
-    string = receiveList[0]
-    revString = string[::-1]
+    string = receiveList[0]         #retrieve string to be reversed
+    revString = string[::-1]        #reverse string
     return revString
     
     
    
 def needleInHaystack():
-    """We’re going to send you a dictionary with two values and keys.
-    The first value, needle, is a string. The second value, haystack,
-    is an array of strings. You’re going to tell the API where the 
-    needle is in the array."""
+    """return index of needle in haystack"""
     needle =receiveList[1]['needle']
     haystack = receiveList[1]['haystack']
     
@@ -40,7 +40,7 @@ def needleInHaystack():
 def prefixFinder():
     """return array containing only strings that don't start with 
     this prefix"""
-    Result = []
+    Result = []                             #empty list where strings will be added
     prefix = receiveList[2]['prefix']
     array = receiveList[2]['array']
     
@@ -51,7 +51,7 @@ def prefixFinder():
     return Result
         
 
-import dateutil.parser
+import dateutil.parser                           #from stackoverflow.com
 def addSeconds(interval, datestamp):
     """adds 'interval' seconds to date represented by datestamp"""
     datestamp = receiveList[3]['datestamp']
